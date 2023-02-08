@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:openvpn_flutter_update/openvpn_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 String csvData ='';
 List<dynamic> japan = [];
 List<dynamic> russia = [];
@@ -33,15 +34,15 @@ class VpnHomePageController extends GetxController {
     engine = OpenVPN(
       onVpnStatusChanged: (data) {
         status.value = data!;
-
       },
       onVpnStageChanged: (data, raw) {
         stage.value = data;
         if (stage.value == VPNStage.connected) {
           animate.value = false;
           isConnected.value = true;
-        } else {
+        }else if(stage.value == VPNStage.exiting){
           animate.value = false;
+        } else {
           isConnected.value = false;
           timeText.value = "00:00";
         }
@@ -74,7 +75,6 @@ class VpnHomePageController extends GetxController {
   startVpn() async{
     if(stage.value == VPNStage.connected){
       engine.disconnect();
-      animate.value =false;
       isConnected.value =false;
     }else{
     //  engine.disconnect();
@@ -85,30 +85,34 @@ class VpnHomePageController extends GetxController {
 
 
   void getVpnDate()async{
-    if(vpnData.isEmpty){
+    final prefs = await SharedPreferences.getInstance();
+    String? value = prefs.getString('vpnData');
+    if(value != null && value != ''){
+      rowsAsListOfValues = const CsvToListConverter().convert(value);
+      rowsAsListOfValues.removeAt(0);
+      rowsAsListOfValues.removeAt(rowsAsListOfValues.length -1);
+      vpnData.add(rowsAsListOfValues[1]);
+      if (kDebugMode) {
+        print(rowsAsListOfValues[1]);
+      }
+    }else{
       progress.value = true;
       var url = Uri.parse('https://www.vpngate.net/api/iphone');
       var response  = await http.get(url);
       if(response.statusCode == 200){
         String data  =response.body;
+        prefs.setString('vpnData', data);
         rowsAsListOfValues = const CsvToListConverter().convert(data);
         rowsAsListOfValues.removeAt(0);
         rowsAsListOfValues.removeAt(rowsAsListOfValues.length -1);
-        for(var item in rowsAsListOfValues){
-          if(item[6] == 'US'){
-            vpnData.add(item);
-            if (kDebugMode) {
-              print(item);
-            }
-            progress.value = false;
-            return;
-          }
+        vpnData.add(rowsAsListOfValues[1]);
+        if (kDebugMode) {
+          print(rowsAsListOfValues[1]);
         }
+        progress.value = false;
       }else{
         progress.value = false;
       }
-    }else{
-      progress.value = false;
     }
   }
 }

@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,52 +19,61 @@ class VpnHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: con.vpnKey,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: GestureDetector(
+            onTap: (){
+              con.vpnKey.currentState?.openDrawer();
+            },
+            child: Image.asset('assets/img/menu_left_icon.png',width: 24,height: 24,)),
+         title: Column(
+           mainAxisAlignment: MainAxisAlignment.center,
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: const [
+             Text(
+               "Unlimited",
+               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16,fontFamily: 'DMSans'),
+             ),
+             Text(
+               "Vpn",
+               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16,fontFamily: 'DMSans'),
+             ),
+           ],
+         ),
+        centerTitle: true,
+      ),
+
       drawer: const Drawer(
         child: DrawerWidget(),
       ),
       body: SafeArea(
         child: Obx(()=>ModalProgressHUD(
           inAsyncCall: con.progress.value,
-          progressIndicator: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(color: AppColors.colorLightGreen,),
-              SizedBox(height: 10,),
-              Text('Fetching Data',style: TextStyle(fontSize: 16,color: Colors.black),)
-            ],
+          progressIndicator: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+            child: Container(
+              width: Get.width,
+              height: Get.height,
+              decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(color: AppColors.colorLightGreen,),
+                  SizedBox(height: 10,),
+                  Text('Fetching servers',style: TextStyle(fontSize: 14,color: Colors.black),),
+                  SizedBox(height: 5,),
+                  Text('configurations',style: TextStyle(fontSize: 14,color: Colors.black),)
+                ],
+              ),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Align(alignment: Alignment.centerLeft, child: InkWell(
-                            onTap: (){
-                              con.vpnKey.currentState?.openDrawer();
-                            },
-                            child: Image.asset('assets/img/menu_left_icon.png',width: 24,height: 24,))),
-                      ),
-                      const Expanded(
-                        child: Center(
-                          child: Text(
-                            "Unlimited Vpn",
-                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18,fontFamily: 'DMSans'),
-                          ),
-                        ),
-                      ),
-                      Expanded(child: Container()),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
+                flex: con.stage.value == VPNStage.connected ? 3 :2,
                 child: Row(
                   children: [
                     Expanded(
@@ -98,6 +109,7 @@ class VpnHomePage extends StatelessWidget {
                   ],
                 ),
               ),
+              if(con.stage.value == VPNStage.connected)
               Expanded(
                 flex: 3,
                 child: Center(
@@ -119,57 +131,25 @@ class VpnHomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              /*Expanded(
-                flex: 7,
-                child: Center(
-                  child: Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: con.isConnected.value ? AppColors.colorLightGreen:AppColors.colorDarkGreen, width: 2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
-                        onTap:con.startVpn,
-                        child: Container(
-                          decoration:  BoxDecoration(
-                            color: con.isConnected.value ? AppColors.colorLightGreen:AppColors.colorDarkGreen,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.power_settings_new,
-                              color: Colors.white,
-                              size: 94,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),*/
                Expanded(
                 flex: 7,
                 child:   Center(
                 child: AvatarGlow(
                   glowColor: AppColors.colorLightGreen,
-                  endRadius: 100,
-                  //repeat: true,
+                  endRadius: 150,
+                  repeat: true,
                  animate: con.animate.value,
                  showTwoGlows: true,
                   child: Container(
-                    height: 160,
-                    width: 160,
+                    height: 170,
+                    width: 170,
                     decoration: BoxDecoration(
                       border: Border.all(color: con.isConnected.value ? AppColors.colorLightGreen:AppColors.colorDarkGreen, width: 2),
                       shape: BoxShape.circle,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: InkWell(
+                      child: GestureDetector(
                         onTap:con.startVpn,
                         child: Container(
                           decoration:  BoxDecoration(
@@ -195,7 +175,6 @@ class VpnHomePage extends StatelessWidget {
                   child: InkWell(
                     onTap: (){
                       Get.to(()=>ServerScreen(callBack: (){
-
                       },));
                     },
                     child: Container(
