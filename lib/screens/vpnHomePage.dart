@@ -27,19 +27,9 @@ class VpnHomePage extends StatelessWidget {
               con.vpnKey.currentState?.openDrawer();
             },
             child: Image.asset('assets/img/menu_left_icon.png',width: 24,height: 24,)),
-         title: Column(
-           mainAxisAlignment: MainAxisAlignment.center,
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: const [
-             Text(
-               "Unlimited",
-               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16,fontFamily: 'DMSans'),
-             ),
-             Text(
-               "Vpn",
-               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16,fontFamily: 'DMSans'),
-             ),
-           ],
+         title: const Text(
+           "Unlimited Vpn",
+           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16,fontFamily: 'DMSans'),
          ),
         centerTitle: true,
       ),
@@ -90,7 +80,7 @@ class VpnHomePage extends StatelessWidget {
                               style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorLightGreen, fontSize: 18),
                             )
                           ],
-                        )),
+                        ),),
                     Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +91,7 @@ class VpnHomePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 10,),
                             Text(
-                              con.vpnData.isNotEmpty ? con.vpnData[0][1].toString(): '',
+                              con.isConnected.value ? con.vpnData[0][1].toString() : con.ipv4.value,
                               style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.colorLightGreen, fontSize: 18),
                             )
                           ],
@@ -261,7 +251,7 @@ class VpnHomePage extends StatelessWidget {
                 ),
             ],
           ),
-        )),
+        ),),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:csv/csv.dart';
+import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ class VpnHomePageController extends GetxController {
   var progress = false.obs;
   var isConnected = false.obs;
   late OpenVPN engine;
+  var ipv4 =''.obs;
   var status = VpnStatus().obs;
   Rx<VPNStage> stage = Rx<VPNStage>(VPNStage.disconnected);
  // VPNStage? stage;
@@ -37,12 +39,15 @@ class VpnHomePageController extends GetxController {
       },
       onVpnStageChanged: (data, raw) {
         stage.value = data;
-        if (stage.value == VPNStage.connected) {
+        if(stage.value == VPNStage.authenticating){
+          animate.value = true;
+        }else if (stage.value == VPNStage.connected) {
           animate.value = false;
           isConnected.value = true;
         }else if(stage.value == VPNStage.exiting){
           animate.value = false;
-        } else {
+          Get.rawSnackbar(message: "Server Disconnected");
+        }else {
           isConnected.value = false;
           timeText.value = "00:00";
         }
@@ -86,6 +91,7 @@ class VpnHomePageController extends GetxController {
 
   void getVpnDate()async{
     final prefs = await SharedPreferences.getInstance();
+    ipv4.value = await Ipify.ipv4();
     String? value = prefs.getString('vpnData');
     if(value != null && value != ''){
       rowsAsListOfValues = const CsvToListConverter().convert(value);

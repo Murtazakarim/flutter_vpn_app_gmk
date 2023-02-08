@@ -38,18 +38,23 @@ class ServerScreen extends StatelessWidget {
         child: ListView.builder(
             itemCount: con.rowsAsListOfValues.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              if (index == 0) {
+              if (index == 0 || index ==con.rowsAsListOfValues.length -1) {
                 return const SizedBox();
               }
               return InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (con.vpnData.isNotEmpty) {
+                      if(await con.engine.isConnected()){
                         con.engine.disconnect();
-                        con.animate.value =false;
-
+                        Future.delayed(const Duration(seconds: 500));
+                      }
+                      con.stage.value = VPNStage.disconnected;
+                        con.animate.value =true;
                       con.vpnData.clear();
                       con.vpnData.add(con.rowsAsListOfValues[index]);
                       con.update();
+                      con.initPlatformState();
+                      Future.delayed(const Duration(seconds: 500));
                       if (kDebugMode) {
                         print(con.rowsAsListOfValues[index]);
                       }
