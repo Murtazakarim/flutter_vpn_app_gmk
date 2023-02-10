@@ -5,20 +5,19 @@ import 'package:vpn/screens/serversScreen.dart';
 import '../screens/vpnHomePage.dart';
 
 appRoutes() => [
-  GetPage(
-    name: AppRoutes.initial,
-    page: () =>  VpnHomePage(),
-    transition: Transition.rightToLeft,
-    transitionDuration: const Duration(milliseconds: 200),
-  ),
-  GetPage(
-    name: AppRoutes.server,
-    page: () =>  ServerScreen(),
-    transition: Transition.rightToLeft,
-    transitionDuration: const Duration(milliseconds: 200),
-  ),
-
-];
+      GetPage(
+        name: AppRoutes.initial,
+        page: () => VpnHomePage(),
+        transition: Transition.rightToLeft,
+        transitionDuration: const Duration(milliseconds: 200),
+      ),
+      GetPage(
+        name: AppRoutes.server,
+        page: () => ServerScreen(),
+        transition: Transition.rightToLeft,
+        transitionDuration: const Duration(milliseconds: 200),
+      ),
+    ];
 
 class MyMiddelware extends GetMiddleware {
   @override

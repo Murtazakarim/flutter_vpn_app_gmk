@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vpn/appStyle/appColors.dart';
+
 class CardServer extends StatelessWidget {
   String countryCode;
   String countryName;
-   CardServer({Key? key,required this.countryCode,required this.countryName}) : super(key: key);
+  CardServer({Key? key, required this.countryCode, required this.countryName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,19 +15,26 @@ class CardServer extends StatelessWidget {
         color: AppColors.colorBtn,
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: Row(
         children: [
-          Image.asset('icons/flags/png/${countryCode.toLowerCase()}.png', package: 'country_icons',  height: 20,
+          Image.asset(
+            'icons/flags/png/${countryCode.toLowerCase()}.png',
+            package: 'country_icons',
+            height: 20,
             width: 25,
-            fit: BoxFit.fill,),
+            fit: BoxFit.fill,
+          ),
           const SizedBox(width: 16),
-           Text(
+          Text(
             countryName,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const Spacer(),
-          const Text('Select',style: TextStyle(fontSize: 16,color: AppColors.colorLightGreen),),
+          const Text(
+            'Select',
+            style: TextStyle(fontSize: 16, color: AppColors.colorLightGreen),
+          ),
         ],
       ),
     );

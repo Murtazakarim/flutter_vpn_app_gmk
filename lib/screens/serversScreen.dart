@@ -38,23 +38,22 @@ class ServerScreen extends StatelessWidget {
         child: ListView.builder(
             itemCount: con.rowsAsListOfValues.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              if (index == 0 || index ==con.rowsAsListOfValues.length -1) {
+              if (index == 0 || index == con.rowsAsListOfValues.length - 1) {
                 return const SizedBox();
               }
               return InkWell(
                   onTap: () async {
                     if (con.vpnData.isNotEmpty) {
-                      if(await con.engine.isConnected()){
+                      if (await con.engine.isConnected()) {
                         con.engine.disconnect();
-                        Future.delayed(const Duration(seconds: 500));
                       }
-                      con.stage.value = VPNStage.disconnected;
-                        con.animate.value =true;
+                      con.animate.value = true;
                       con.vpnData.clear();
+                      con.cameFromServer.value = true;
                       con.vpnData.add(con.rowsAsListOfValues[index]);
                       con.update();
                       con.initPlatformState();
-                      Future.delayed(const Duration(seconds: 500));
+                      Future.delayed(const Duration(milliseconds: 800));
                       if (kDebugMode) {
                         print(con.rowsAsListOfValues[index]);
                       }
@@ -63,12 +62,11 @@ class ServerScreen extends StatelessWidget {
                     }
                   },
                   child: CardServer(
-                      countryName: con.rowsAsListOfValues[index][5],
-                      countryCode: con.rowsAsListOfValues[index][6],));
+                    countryName: con.rowsAsListOfValues[index][5],
+                    countryCode: con.rowsAsListOfValues[index][6],
+                  ));
             }),
       ),
     );
   }
 }
-
-

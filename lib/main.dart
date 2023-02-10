@@ -16,15 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Vpn',
-     debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.initial,
       getPages: appRoutes(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
-         fontFamily: 'DMSans',
-         backgroundColor: Colors.white,
+        fontFamily: 'DMSans',
+        backgroundColor: Colors.white,
       ),
     );
   }
 }
-

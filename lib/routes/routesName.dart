@@ -1,4 +1,4 @@
-class AppRoutes{
+class AppRoutes {
   static const String initial = '/';
-  static const String server ='/server';
+  static const String server = '/server';
 }
