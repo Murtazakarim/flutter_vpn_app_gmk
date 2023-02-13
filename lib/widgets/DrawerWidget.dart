@@ -15,7 +15,7 @@ class DrawerWidget extends StatelessWidget {
         color: const Color(0xFFFCFCFC),
         child: Column(
           children: [
-            Container(
+            /*Container(
               width: Get.width,
               height: Get.height * 0.22,
               color: const Color(0xFFF1F1F1),
@@ -29,13 +29,22 @@ class DrawerWidget extends StatelessWidget {
                       height: 95,
                     )),
               ),
-            ),
-            const SizedBox(
-              height: 20.0,
+            ),*/
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1F1F1),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/img/banner.png',
+                  width: 200,
+                  height: 95,
+                ),
+              ),
             ),
             ListTile(
               onTap: () {
-
                 Get.back();
               },
               leading: Image.asset('assets/img/company.png'),
@@ -50,7 +59,8 @@ class DrawerWidget extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Share.share('Get online privacy and security with just a tap! Download Unlimited VPN, the best VPN app for mobile devices. Connect to the internet securely, access restricted content, and protect your personal information.  Download from https://vpn.hmstudio92.site');
+                Share.share(
+                    'Get online privacy and security with just a tap! Download Unlimited VPN, the best VPN app for mobile devices. Connect to the internet securely, access restricted content, and protect your personal information.  Download from https://vpn.hmstudio92.site');
               },
               leading: const Icon(
                 Icons.share,

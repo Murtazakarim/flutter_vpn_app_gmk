@@ -7,7 +7,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:openvpn_flutter_update/openvpn_flutter.dart';
 import 'package:vpn/appStyle/appColors.dart';
 import 'package:vpn/controller/vpnHomePageController.dart';
-import 'package:vpn/routes/routesName.dart';
 import 'package:vpn/screens/serversScreen.dart';
 import 'package:vpn/widgets/DrawerWidget.dart';
 
@@ -32,7 +31,7 @@ class VpnHomePage extends StatelessWidget {
               height: 24,
             )),
         title: const Text(
-          "Unlimited Vpn",
+          "Unlimited VPN",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,

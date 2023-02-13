@@ -1,4 +1,4 @@
-package com.example.vpn
+package com.hmstudio.vpn
 
 import android.content.Intent
 import id.laskarmedia.openvpn_flutter.OpenVPNFlutterPlugin
